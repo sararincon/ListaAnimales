@@ -12,25 +12,29 @@ class Propietario {
 class Animal extends Propietario {
   constructor(nombre, direccion, telefono, tipo) {
     super(nombre, direccion, telefono);
-    this.tipo = tipo;
+    this._tipo = tipo;
   }
   get tipo() {
-    return this.tipo;
-  }
-  set tipo(nuevo_tipo) {
-    this.nuevo_tipo = nuevo_tipo;
+    return this._tipo;
   }
 }
 
 class Mascota extends Animal {
-  constructor({nombre, direccion, telefono, tipo, nombre_mascota, enfermedad}) {
+  constructor({
+    nombre,
+    direccion,
+    telefono,
+    tipo,
+    nombre_mascota,
+    enfermedad,
+  }) {
     super(nombre, direccion, telefono, tipo);
-    this.nombre_mascota = nombre_mascota;
-    this.enfermedad = enfermedad;
+    this._nombre_mascota = nombre_mascota;
+    this._enfermedad = enfermedad;
   }
 
   get nombre_mascota() {
-    return this.nombre_mascota;
+    return this._nombre_mascota;
   }
 
   set nombre_mascota(nuevo_nombre_mascota) {
@@ -38,57 +42,49 @@ class Mascota extends Animal {
   }
 
   get enfermedad() {
-    return this.enfermedad;
+    return this._enfermedad;
   }
 
   set enfermedad(nueva_enfermedad) {
     this.nueva_enfermedad = nueva_enfermedad;
   }
-  html(){
-    return grupo.parseFromString(`<ul><li>${this.datosPropietario()}</li> el nombre del dueño es: ${this.nombre}. 
-    El domicilio es ${this.direccion}, y el número de contacto es: ${this.telefono}<ul><li>`)
+  html() {
+    const grupo = new DOMParser();
+    return grupo.parseFromString(
+      `<li>${this.datosPropietario()}</li><li>${
+        this.tipo
+      }, mientras que el nombre de la mascota es: ${
+        this._nombre_mascota
+      } y la enfermedad es: ${this.enfermedad}</li>`,
+      "text/html"
+    );
   }
 }
 
 const form = document.querySelector("form");
+const resultado = document.querySelector("#resultado ul");
 
-form.addEventListener("submit", agregarDatos)
+form.addEventListener("submit", agregarDatos);
 
-function agregarDatos(e){
+function agregarDatos(e) {
   e.preventDefault();
 
+  const { propietario, direccion, telefono, nombreMascota, tipo, enfermedad } =
+    form;
   const datos_de_mascota = {
-    nombre: form.propietario.value,
-    direccion: form.direccion.value,
-    telefono: form.telefono.value,
-    nombre_mascota: form.nombreMascota.value,
-    tipo: form.tipo.value,
-    enfermedad: form.enfermedad.value,
+    nombre: propietario.value,
+    direccion: direccion.value,
+    telefono: telefono.value,
+    nombre_mascota: nombreMascota.value,
+    tipo: tipo.value,
+    enfermedad: enfermedad.value,
   };
- console.log(datos_de_mascota)
+  // console.log(datos_de_mascota);
 
- const mascota = new Mascota (datos_de_mascota)
- console.log(mascota);
- const agregandoDatos = this.html(mascota)
- console.log(agregandoDatos);
+  const mascota = new Mascota(datos_de_mascota);
+  // console.log(mascota);
+  const agregandoDatos = mascota.html();
+  // console.log(agregandoDatos);
 
- resultado.innerHTML = agregandoDatos.body.innerHTML
-
+  resultado.innerHTML = agregandoDatos.body.innerHTML;
 }
-
-// const valores = document.querySelector("#submitValues");
-
-// valores.addEventListener("click", (e) => {
-//   e.preventDefault();
-//   const propietario = document.querySelector("#propietario").value 
-//   const telefono = document.querySelector("#telefono").value
-//   const direccion = document.querySelector("#direccion").value
-//   const mascota_name = document.querySelector("#nombreMascota").value
-//   const consulta_enfermedad = document.querySelector("#enfermedad").value;
-
-// const resultado = document.querySelector("#resultado");
-
-// const pagara = nuevo_cliente.datosPropietario();
-
-// console.log(pagara);
-// });
