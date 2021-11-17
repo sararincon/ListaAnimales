@@ -1,4 +1,4 @@
 # ListaAnimales
 Herencia JS
 
-https://github.com/sararincon/ListaAnimales
+https://sararincon.github.io/ListaAnimales/
